@@ -1,0 +1,81 @@
+﻿@model List<Order>
+@{
+    ViewData["Title"] = "All Your Orders";
+
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+}
+
+@section style {
+    <link rel="stylesheet" href="~/assets/css/orders.css">
+}
+
+<section class="container">
+    <div class="row ">
+        <div class="col3 col-md-6 col-lg-12">
+            <p>
+                @if (User.IsInRole("Admin"))
+                {
+                    <h3>list of all Users orders</h3>
+                }else
+                {
+                    <h3>list of your orders</h3>
+                }
+            </p>
+            <table class="table table-bordered text-center" width="50%">
+                <thead>
+                    <tr>
+                        <th>Orders Id</th>
+                        <th>Items</th>
+                        <th>Total</th>
+                        <th>Discount</th>
+                        <th>Total(After discount)</th>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <th>User</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td class="align-middle"> @order.Id</td>
+                            <td class="align-middle">
+                                <ul style="list-style-type:none">
+                                    @foreach (var item in order.OrderDetails)
+                                    {
+                                        <li>
+                                            <div class="alert alert-info mb-1 mt-2" role="alert"></div>
+                                            <span class="badge bg-success">@item.Quantity</span> [@item.Price.ToString("c")] - @item.Product.Name
+                                        </li>
+                                    }
+                                </ul>
+                            </td>
+                            <td class="align-middle">
+                                @order.OrderDetails.Select(xx => xx.Product.UnitPrice * xx.Quantity).Sum().ToString("c")
+                            </td>
+                            <td class="align-middle">
+                                @order.OrderDetails.Select(xx => xx.Product.Discount * xx.Quantity).Sum().ToString("c")
+                            </td>
+                            <td class="align-middle">
+                                @order.OrderDetails.Select(xx => (xx.Product.UnitPrice - xx.Product.Discount) * xx.Quantity).Sum().ToString("c")
+                            </td>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <td class="align-middle"> @order.User.UserName</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+<partial name="_Pager2" model="@pager" />

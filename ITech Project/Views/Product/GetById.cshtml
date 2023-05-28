@@ -1,0 +1,248 @@
+﻿@model Product
+
+@section style {
+<link rel="stylesheet" href="~/assets/css/details.css">
+}
+
+<section class="items-section">
+    <div class="container">
+        <div class="h m-3 ms-0">
+            <p>Product Details</p>
+        </div>
+        <div class="details d-flex flex-row">
+            <div id="carouselExampleDark" class="carousel carousel-dark" data-bs-ride="carousel">
+                @{
+                    string str = Model.Picture;
+                    var pictureList = str.Split(",");
+                }
+                <div class="carousel-indicators">
+                    @for (int i = 0; i < @pictureList.Length; i++)
+                    {
+                        <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="@i" class="active"
+                            aria-current="true" aria-label="Slide @i"></button>
+                    }
+                </div>
+                <div class="carousel-inner">
+                    @if (pictureList.Length <= 1)
+                    {
+                        //image is one picture
+                        <div class="carousel-item active">
+                            @if (Model.ModelMobile != null)
+                            {
+                                <img src="@str" class="d-block" alt="@Model.Name" onerror="this.src='https://i.insider.com/60117b551d2df20018b71117?width=1136&format=jpeg'">
+                            }
+                            else if (Model.ModelLabtop != null)
+                            {
+                                <img src="@str" class="d-block" alt="@Model.Name" onerror="this.src='https://images.prismic.io/frameworkmarketplace/cca31de3-3b75-4932-af96-7646b7eba6c7__DSC3630-Edit-cropped.jpg?auto=compress,format'">
+                            }
+                            else if (Model.Accessories != null)
+                            {
+                                <img src="@str" class="d-block" alt="@Model.Name" onerror="this.src='https://3.bp.blogspot.com/-zka4TWwz3ZM/WjQjLhMVNrI/AAAAAAABT18/tpJM9Owjtwwqc-ZlMlUiBrxL8By3tF55wCLcBGAs/s1600/best-tech-accessories.jpg'">
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        @*more than one picture*@
+
+                        @*active image*@
+                        <div class="carousel-item active">
+                            @if (Model.ModelMobile != null)
+                            {
+                                <img src="@pictureList[0]" class="d-block" alt="@Model.Name onerror=" this.src='https://i.insider.com/60117b551d2df20018b71117?width=1136&format=jpeg' />
+                            }
+                            else if (Model.ModelLabtop != null)
+                            {
+                                <img src="@pictureList[0]" class="d-block" alt="@Model.Name onerror=" this.src='https://images.prismic.io/frameworkmarketplace/cca31de3-3b75-4932-af96-7646b7eba6c7__DSC3630-Edit-cropped.jpg?auto=compress,format' />
+                            }
+                            else if (Model.Accessories != null)
+                            {
+                                <img src="@pictureList[0]" class="d-block" alt="@Model.Name" onerror="this.src='https://3.bp.blogspot.com/-zka4TWwz3ZM/WjQjLhMVNrI/AAAAAAABT18/tpJM9Owjtwwqc-ZlMlUiBrxL8By3tF55wCLcBGAs/s1600/best-tech-accessories.jpg'">
+                            }
+                        </div>
+                        for (int i = 1; i < pictureList.Length; i++)
+                        {
+                            <div class="carousel-item">
+                                @if (Model.ModelMobile != null)
+                                {
+                                    <img src="@pictureList[i]" class="d-block" alt="@Model.Name" onerror="this.src='https://i.insider.com/60117b551d2df20018b71117?width=1136&format=jpeg'">
+                                }
+                                else if (Model.ModelLabtop != null)
+                                {
+                                    <img src="@pictureList[i]" class="d-block" alt="@Model.Name" onerror="this.src='https://images.prismic.io/frameworkmarketplace/cca31de3-3b75-4932-af96-7646b7eba6c7__DSC3630-Edit-cropped.jpg?auto=compress,format'">
+                                }
+                                else if (Model.Accessories != null)
+                                {
+                                    <img src="@pictureList[i]" class="d-block" alt="@Model.Name" onerror="this.src='https://3.bp.blogspot.com/-zka4TWwz3ZM/WjQjLhMVNrI/AAAAAAABT18/tpJM9Owjtwwqc-ZlMlUiBrxL8By3tF55wCLcBGAs/s1600/best-tech-accessories.jpg'">
+                                }
+                            </div>
+                        }
+                    }
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
+                        data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
+                        data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+            <div class="speces">
+                <div class="Product-Title">
+                    <h4>@Model.Name</h4>
+                    <hr>
+                </div>
+                <div class="Product-Specification">
+                    <h4>Product Specification</h4>
+                    <hr>
+                    <span class="d-block">
+                        Brand:
+                        @if (Model.Category == Category.Laptop)
+                        {
+                            <p class="d-inline">@Model.ModelLabtop</p>
+                        }
+                        else if (Model.Category == Category.Phone)
+                        {
+                            <p class="d-inline">@Model.ModelMobile</p>
+                        }
+                    </span>
+                    <span>
+                        Color: <p class="d-inline">@Model.Color</p>
+                    </span>
+                    <span class="d-block">
+                        Availability:
+                        @if (Model.UnitsInStock > 0)
+                        {
+                            <p class="d-inline">@Model.UnitsInStock</p>
+                        }
+                        else
+                        {
+                            <p class="d-inline">Out Of Stock</p>
+                        }
+                    </span>
+                </div>
+                <div class="Product-reviews">
+                    <h4>Product Reviews</h4>
+                    <hr>
+                    <span class="d-block">
+                        @for (int i = 0; i < Model.Ranking; i++)
+                        {
+                            <i class='bx bxs-star'></i>
+                        }
+                        @for (byte? i = Model.Ranking; i < 5; i++)
+                        {
+                            <i class='bx bx-star'></i>
+                        }
+                        @switch (Model.Ranking)
+                        {
+                            case 0:
+                                <p class="d-inline">Very Bad</p>
+                                break;
+                            case 1:
+                                <p class="d-inline">Bad</p>
+                                break;
+                            case 2:
+                                <p class="d-inline">Normal</p>
+                                break;
+                            case 3:
+                                <p class="d-inline">Good</p>
+                                break;
+                            case 4:
+                                <p class="d-inline">Very Good</p>
+                                break;
+                            case 5:
+                                <p class="d-inline">Excellent</p>
+                                break;
+                        }
+                    </span>
+                </div>
+            </div>
+            <div class="Desc">
+                <div class="Product-Description">
+                    <h4>Product description</h4>
+                    <hr>
+                    <span class="d-block">
+                        <p>
+                            @Model.Description
+                        </p>
+                    </span>
+                </div>
+                <div class="Product-price">
+                    <h4>Product price</h4>
+                    <hr>
+                    <span class="d-block price-val">
+                        @{
+                            string price = ($"{Model.UnitPrice - Model.Discount}");
+                        }
+                        <p class="d-inline" style="text-decoration: line-through">$ @Model.UnitPrice</p>
+                        <p class="d-inline">$@price</p>
+                    </span>
+
+                    <a asp-controller="Order" asp-action="AddToShoppingCart" asp-route-id="@Model.Id">
+                        <span class="d-flex justify-content-center align-items-center flex-row add-to-cart">
+                            <i class='bx bxs-cart-add add-cart '></i>
+                            <p class="d-inline">add-to cart</p>
+                        </span>
+                    </a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@Model.Id" id="delete-product" class="btn btn-danger">Delete</a>
+                    }
+                </div>
+            </div>
+        </div>
+        <div id="custome-accordion" class="d-flex flex-column">
+            <div class="d-flex flex-row" id="ca-title">
+                <span>Description</span>
+                <span>Specification</span>
+                <span>reviews</span>
+            </div>
+            <div class="d-flex flex-row" id="ca-body">
+                <div>
+                    <h6>Product Description:</h6><br>
+                    <p>@Model.Description</p>
+                </div>
+                <div hidden>
+                    <h6>Product Specification:</h6><br>
+                    <span class="d-block">
+                        Brand:
+                        @if (Model.Category == Category.Laptop)
+                        {
+                            <p class="d-inline">@Model.ModelLabtop</p>
+                        }
+                        else if (Model.Category == Category.Phone)
+                        {
+                            <p class="d-inline">@Model.ModelMobile</p>
+                        }
+                    </span>
+                    <span>
+                        Color: <p class="d-inline">@Model.Color</p>
+                    </span>
+                    <span class="d-block">
+                        Availability:
+                        @if (Model.UnitsInStock > 0)
+                        {
+                            <p class="d-inline">In Stock</p>
+                        }
+                        else
+                        {
+                            <p class="d-inline">Out Of Stock</p>
+                        }
+                    </span>
+                </div>
+                <div hidden>
+                    <h6>Customers reviews:</h6><br>
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aliquid dolorem, atque nemo tenetur veritatis fuga dolore modi exercitationem quidem labore accusantium, delectus reiciendis quam voluptates architecto hic debitis sapiente earum.
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section scripts{
+<script src="~/assets/js/details.js"></script>
+}

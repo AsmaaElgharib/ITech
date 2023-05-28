@@ -1,0 +1,148 @@
+﻿@model ShoppingCartViewModel
+@section style {
+<link rel="stylesheet" href="~/assets/css/cart.css">
+}
+
+<div class="container cart-c">
+    <h1>Your cart</h1>
+    <div class="cart">
+        <div class="products">
+
+            @foreach (var item in Model.ShoppingCart.ShoppingCartItems)
+            {
+
+                string str = item.product.Picture;
+                var pictureList = str.Split(",");
+
+                <div class="product">
+                    @if (item.product.ModelMobile != null)
+                    {
+                        <img src="@pictureList[0]" alt="@item.product.Name" width="150"
+                     onerror="this.src='https://i.insider.com/60117b551d2df20018b71117?width=1136&format=jpeg' "
+                     class="product-img">
+                    }
+                    @if (item.product.ModelLabtop != null)
+                    {
+                        <img src="@pictureList[0]" alt="@item.product.Name" width="150"
+                     onerror="this.src='https://images.prismic.io/frameworkmarketplace/cca31de3-3b75-4932-af96-7646b7eba6c7__DSC3630-Edit-cropped.jpg?auto=compress,format'"
+                     class="product-img">
+                    }
+                    @if (item.product.Accessories != null)
+                    {
+                        <img src="@pictureList[0]" alt="@item.product.Name" width="150"
+                     onerror="this.src='https://3.bp.blogspot.com/-zka4TWwz3ZM/WjQjLhMVNrI/AAAAAAABT18/tpJM9Owjtwwqc-ZlMlUiBrxL8By3tF55wCLcBGAs/s1600/best-tech-accessories.jpg'"
+                     class="product-img">
+                    }
+
+                    <div class="product-info">
+                        <h4 class="product-name">@item.product.Name</h4>
+                        <div class="mb-2">
+                            <h6 class="d-inline">Price:</h6>
+                            <span class="product-price d-inline">@item.product.UnitPrice.ToString("c")</span><br />
+                        </div>
+
+                        <div class="mb-2">
+                            <h6 class="d-inline">Discount:</h6>
+                            <span class="product-offer d-inline">@item.product.Discount.ToString("c")</span>
+                        </div>
+
+                        <div class="mb-2">
+                            <h6 class="d-inline">SubTotal:</h6>
+                            <span class="product-price d-inline">@((item.Amount*item.product.UnitPrice-item.product.Discount).ToString("c"))</span><br />
+                        </div>
+
+                        <div class="mb-2">
+                            <h6 class="d-inline">Quantity:</h6>
+                            <span class="product-quantity">
+                                @item.Amount
+                            </span>
+                        </div>
+
+
+                        <a asp-action="AddToShoppingCart" asp-route-id="@item.product.Id">
+                            <div class="product-add">
+                                <i class='bx bxs-message-square-add'></i>
+                            </div>
+                        </a>
+
+                        <a asp-action="RemoveItemFromCart" asp-route-id="@item.product.Id">
+                            <div class="product-remove">
+                                <i class='bx bxs-message-square-minus'></i>
+                            </div>
+                        </a>
+
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="cart-total">
+            <p>
+                <span>Total Price</span>
+                <span>@Model.ShoppingCartTotal.ToString("c")</span>
+            </p>
+            <div class="Items-number-c">
+                <span>Number of Items:</span>
+                <span>
+                    @await Component.InvokeAsync("ShoppingCartSummary")
+                </span>
+            </div>
+            <p>
+                <span>Discount</span>
+                <span>@Model.ShoppingCartDiscount.ToString("c")</span>
+            </p>
+            <a asp-controller="Product" asp-action="GetAll" class="cart-btn">Add More Products</a>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="paypal-chk">
+                    <div id="paypal-btn"></div>
+                </div>
+            }
+            else
+            {
+                <a asp-action="login" asp-controller="account" class="cart-btn">Login To Complete Order</a>
+            }
+            <span style="padding:5px"></span>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+<script src="~/assets/js/cart.js"></script>
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+<script>
+
+    let _total = @Html.Raw(Model.ShoppingCartTotal);
+
+    paypal.Button.render({
+        //Configure environment
+        env: 'sandbox',
+        client: {
+            sandbox: 'AckjySmxYA4fGOYvakp4CxB_CC3g_Hj240XCMjrmQ4gHfy0A4ek9W8myZWH38isHRiJaXWzt7kED8xhp'
+        },
+
+        //Customize button
+        locale: 'en_US',
+        style: {
+            size: 'small',
+            color: 'gold',
+            shape: 'pill'
+        },
+        commit: true, // PAY NOW CHECK
+
+        //Set up a payment
+        payment: function (data, actions) {
+            return actions.payment.create({
+                transactions: [{
+                    amount: {
+                        total: _total,
+                        currency: 'USD' //LE
+                    }
+                }]
+            });
+        },
+
+        //Execute the payment
+        onAuthorize: () => window.location.assign("/ordercompleted?Ispaid=true")
+    }, '#paypal-btn')
+</script>
+}

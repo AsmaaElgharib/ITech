@@ -1,0 +1,76 @@
+﻿@section style {
+<link rel="stylesheet" href="~/assets/css/Dashboard.css">
+}
+
+<section class="home p-4">
+    <div class="shop-content container">
+
+        <div class="product-box">
+            <img src="~/assets/imgs/dashboard/events-2.jpg" class="product-img" alt="...">
+            <div class="Dash-item">
+                <div class="d-flex flex-column flex-md-row align-items-center mb-3 mt-3">
+                    <h5 class="me-3 mb-0">Show All Products</h5>
+                    <a class="btn btn-outline-warning" asp-controller="Product" asp-action="GetAll">Products</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-box">
+            <img src="~/assets/imgs/dashboard/events-1.jpg" class="product-img" alt="...">
+            <div class="Dash-item">
+                <div class="d-flex flex-column flex-md-row align-items-center mb-3 mt-3">
+                    <h5 class="me-3 mb-0">Show All orders:</h5>
+                    <a class="btn btn-outline-warning" asp-controller="Order" asp-action="GetAllOrders">orders</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-box">
+            <div class="course-item">
+                <img src="~/assets/imgs/dashboard/course-2.jpg" class="product-img" alt="...">
+                <div class="Dash-item">
+                    <div class="d-flex flex-column flex-md-row align-items-center mb-3 mt-3">
+                        <h5 class="me-3 mb-0">Show Customers:</h5>
+                        <a class="btn btn-outline-warning" asp-controller="Customer" asp-action="GetAllCustomers">Customers</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-box">
+            <img src="~/assets/imgs/carts/21.jpeg" class="product-img" alt="...">
+            <div class="Dash-item">
+                <div class="d-flex flex-column flex-md-row align-items-center mb-3 mt-3">
+                    <h5 class="me-3 mb-0">Show Suppliers:</h5>
+                    <a class="btn btn-outline-warning" asp-controller="Supplier" asp-action="GetAll">Suppliers</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-box">
+            <div class="course-item">
+                <img src="~/assets/imgs/dashboard/course-1.jpg" class="product-img" alt="...">
+                <div class="Dash-item">
+                    <div class="d-flex flex-column flex-md-row align-items-center mb-3 mt-3">
+                        <h5 class="me-3 mb-0">Show Roles Data:</h5>
+                        <a class="btn btn-outline-warning" asp-controller="Role" asp-action="GetRoles">Roles</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-box">
+            <img src="~/assets/imgs/dashboard/course-3.jpg" class="product-img" alt="...">
+            <div class="Dash-item">
+                <div class="d-flex flex-column flex-md-row align-items-center mb-3 mt-3">
+                    <h5 class="me-3 mb-0">Create new Admin:</h5>
+                    <a class="btn btn-outline-warning" asp-controller="Account" asp-action="SignUpAdmin">new Admin</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section scripts {
+<script src="~/assets/js/dashboard.js"></script>
+}

@@ -1,0 +1,49 @@
+﻿@model List<Supplier>
+
+@section style {
+<link rel="stylesheet" href="~/assets/css/orders.css">
+}
+
+<div class="container">
+    <a asp-action="Create" asp-controller="Supplier" class="btn btn-warning mb-3">Add new Supplier</a>
+    <table class="table table-bordered text-center" width="50%">
+        <tr>
+            <th>Company Name</th>
+            <th>Contact First Name</th>
+            <th>Contact Last Name</th>
+            <th>Country</th>
+            @*            @if (User.IsInRole("Supplier"))
+                {
+                <th>Edit</th>
+                }*@
+            <th>Details</th>
+            <th>Delete</th>
+
+
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.CompanyName</td>
+                <td>@item.ContactFName</td>
+                <td>@item.ContactLName</td>
+                <td>@item.Country</td>
+                @*                @if (User.IsInRole("Supplier"))
+                    {
+                    <td> <a asp-action="Update" asp-controller="Supplier" asp-route-id="@item.Id" class="btn btn-warning">Edit</a></td>
+                    }*@
+                <td> <a asp-action="GetById" asp-controller="Supplier" asp-route-id="@item.Id" class="btn btn-warning">Details</a></td>
+                <td><a class="btn btn-danger" asp-action="Delete" asp-controller="Supplier" asp-route-id="@item.Id" onclick="ConfirmDelete(event)">Delete</a></td>
+            </tr>
+        }
+    </table>
+    <a asp-action="dashboard" asp-controller="dashboard" class="btn btn-secondary">Back to dashboard</a>
+</div>
+
+<script>
+    function ConfirmDelete(){
+        var accept=confirm("Are You Sure?");
+        if(accept==false)
+            event.preventDefault();
+    }
+</script>
